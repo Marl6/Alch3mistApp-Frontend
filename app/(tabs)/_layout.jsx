@@ -11,13 +11,13 @@ const TabsLayout = () => {
     return <Tabs>
 
       <Tabs.Screen 
-      name="index" />
+      name="index"
       options={{
         title:"Recipes",
         tabBarIcon: ({Colors, size}) => <Ionicons name="restaurant"
         size={size}
         color={Colors}/>
-      }}
+      }}/>
     </Tabs>
   
 }

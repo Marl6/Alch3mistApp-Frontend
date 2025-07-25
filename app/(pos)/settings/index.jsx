@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Ionicons } from '@expo/vector-icons';
 import { posStyles } from '../../../assets/styles/pos.styles';
 import PosHeader from '../../../components/pos/PosHeader';
@@ -9,13 +10,15 @@ import { COLORS } from '../../../constants/colors';
 
 const SettingsScreen = () => {
   const router = useRouter();
+  const { signOut } = useAuth();
+  const { user } = useUser();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const email = "louiekerby@gmail.com"; // Example email from screenshot
+  const email = user?.primaryEmailAddress?.emailAddress || "No email found";
   
   const settingItems = [
-    { name: 'Printers', icon: 'print', route: '/settings/printers' },
-    { name: 'Taxes', icon: 'percent', route: '/settings/taxes' },
-    { name: 'General', icon: 'settings', route: '/settings/general' },
+    { name: 'Printers', icon: 'print-outline', route: '/settings/printers' },
+    { name: 'Taxes', icon: 'cash-outline', route: '/settings/taxes' },
+    { name: 'General', icon: 'settings-outline', route: '/settings/general' },
   ];
   
   return (
@@ -69,7 +72,34 @@ const SettingsScreen = () => {
         <View style={posStyles.accountContainer}>
           <Text style={posStyles.accountEmail}>{email}</Text>
           
-          <TouchableOpacity style={posStyles.signOutButton}>
+          <TouchableOpacity 
+            style={posStyles.signOutButton}
+            onPress={() => {
+              Alert.alert(
+                "Sign Out",
+                "Are you sure you want to sign out?",
+                [
+                  { 
+                    text: "Cancel", 
+                    style: "cancel" 
+                  },
+                  { 
+                    text: "Sign Out", 
+                    style: "destructive",
+                    onPress: async () => {
+                      try {
+                        await signOut();
+                        router.replace('/(auth)/sign-in');
+                      } catch (error) {
+                        Alert.alert("Error", "Failed to sign out. Please try again.");
+                        console.error("Sign out error:", error);
+                      }
+                    }
+                  }
+                ]
+              );
+            }}
+          >
             <Text style={posStyles.signOutButtonText}>SIGN OUT</Text>
           </TouchableOpacity>
         </View>

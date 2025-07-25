@@ -1,5 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { COLORS } from '../../constants/colors';
+
+// Helper function to create cross-platform shadow styles
+const createShadow = (color, offset, opacity, radius, elevation = 5) => {
+  if (Platform.OS === 'web') {
+    return {
+      boxShadow: `${offset.width}px ${offset.height}px ${radius}px rgba(${color === COLORS.shadow ? '0, 0, 0' : color}, ${opacity})`,
+    };
+  }
+  return {
+    shadowColor: color,
+    shadowOffset: offset,
+    shadowOpacity: opacity,
+    shadowRadius: radius,
+    elevation,
+  };
+};
 
 export const posStyles = StyleSheet.create({
   // General Layout
@@ -406,14 +422,7 @@ export const posStyles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: COLORS.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
+    ...createShadow(COLORS.shadow, { width: 0, height: 2 }, 0.3, 3, 5),
   },
   
   // Link Text

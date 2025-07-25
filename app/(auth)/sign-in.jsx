@@ -40,7 +40,24 @@ const SignInScreen = () => {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err){
-      Alert.alert("Error", err.errors?.[0]?.message || "Sign in failed");
+      // Improved error handling with more specific messages
+      const errorMsg = err.errors?.[0]?.message || "";
+      let displayMessage = "Sign in failed. Please try again.";
+      
+      if (errorMsg.includes("email")) {
+        displayMessage = "Invalid email address. Please check and try again.";
+      } else if (errorMsg.includes("password") || errorMsg.includes("credentials")) {
+        displayMessage = "Incorrect password. Please check your password and try again.";
+      } else if (errorMsg.includes("verification")) {
+        displayMessage = "Email not verified. Please verify your email before signing in.";
+      } else if (errorMsg.includes("rate limit")) {
+        displayMessage = "Too many attempts. Please try again later.";
+      } else if (errorMsg) {
+        // Use the error message from Clerk if available
+        displayMessage = errorMsg;
+      }
+      
+      Alert.alert("Authentication Failed", displayMessage);
       console.error(JSON.stringify(err, null, 2));
     } finally {
       setLoading(false);

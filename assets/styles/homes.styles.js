@@ -1,8 +1,38 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 import { COLORS } from "../../constants/colors";
 
 const { width } = Dimensions.get("window");
 const cardWidth = (width - 48) / 2;
+
+// Helper function to create cross-platform shadow styles
+const createShadow = (color, offset, opacity, radius, elevation = 5) => {
+  if (Platform.OS === 'web') {
+    return {
+      boxShadow: `${offset.width}px ${offset.height}px ${radius}px rgba(${color === COLORS.shadow ? '0, 0, 0' : color}, ${opacity})`,
+    };
+  }
+  return {
+    shadowColor: color,
+    shadowOffset: offset,
+    shadowOpacity: opacity,
+    shadowRadius: radius,
+    elevation,
+  };
+};
+
+// Helper function for text shadow (web uses textShadow)
+const createTextShadow = (color, offset, radius) => {
+  if (Platform.OS === 'web') {
+    return {
+      textShadow: `${offset.width}px ${offset.height}px ${radius}px ${color}`,
+    };
+  }
+  return {
+    textShadowColor: color,
+    textShadowOffset: offset,
+    textShadowRadius: radius,
+  };
+};
 
 export const homeStyles = StyleSheet.create({
   container: {
@@ -34,14 +64,7 @@ export const homeStyles = StyleSheet.create({
     borderRadius: 24,
     overflow: "hidden",
     backgroundColor: COLORS.card,
-    shadowColor: COLORS.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    elevation: 12,
+    ...createShadow(COLORS.shadow, { width: 0, height: 12 }, 0.2, 16, 12),
   },
   featuredImageContainer: {
     height: 240,
@@ -78,9 +101,7 @@ export const homeStyles = StyleSheet.create({
     fontWeight: "800",
     color: COLORS.white,
     marginBottom: 12,
-    textShadowColor: "rgba(0,0,0,0.3)",
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    ...createTextShadow("rgba(0,0,0,0.3)", { width: 0, height: 2 }, 4),
   },
   featuredMeta: {
     flexDirection: "row",
@@ -151,14 +172,7 @@ export const homeStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     minWidth: 80,
-    shadowColor: COLORS.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    ...createShadow(COLORS.shadow, { width: 0, height: 2 }, 0.05, 4, 2),
   },
   selectedCategory: {
     backgroundColor: COLORS.primary,
@@ -193,14 +207,7 @@ export const recipeCardStyles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderRadius: 16,
     marginBottom: 16,
-    shadowColor: COLORS.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    ...createShadow(COLORS.shadow, { width: 0, height: 4 }, 0.1, 8, 4),
     overflow: "hidden",
   },
   imageContainer: {

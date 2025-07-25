@@ -46,14 +46,14 @@ const SideDrawer = ({ isOpen, onClose, activeRoute }) => {
   };
   
   const navItems = [
-    { name: 'sales', icon: 'basket-outline', route: '/(pos)/' },
-    { name: 'receipts', icon: 'receipt-outline', route: '/(pos)/receipts' },
-    { name: 'shift', icon: 'time-outline', route: '/(pos)/shift' },
-    { name: 'items', icon: 'list-outline', route: '/(pos)/items' },
-    { name: 'settings', icon: 'settings-outline', route: '/(pos)/settings' },
-    { name: 'back office', icon: 'bar-chart-outline', route: '/(pos)/backoffice' },
-    { name: 'apps', icon: 'apps-outline', route: '/(pos)/apps' },
-    { name: 'support', icon: 'information-circle-outline', route: '/(pos)/support' },
+    { name: 'index', icon: 'basket-outline', route: '/(pos)/', label: 'Sales' },
+    { name: 'receipts', icon: 'receipt-outline', route: '/(pos)/receipts', label: 'Receipts' },
+    { name: 'shift', icon: 'time-outline', route: '/(pos)/shift', label: 'Shift' },
+    { name: 'items', icon: 'list-outline', route: '/(pos)/items', label: 'Items' },
+    { name: 'settings', icon: 'settings-outline', route: '/(pos)/settings', label: 'Settings' },
+    { name: 'backoffice', icon: 'bar-chart-outline', route: '/(pos)/backoffice', label: 'Back Office' },
+    { name: 'apps', icon: 'apps-outline', route: '/(pos)/apps', label: 'Apps' },
+    { name: 'support', icon: 'information-circle-outline', route: '/(pos)/support', label: 'Support' },
   ];
 
   if (!isOpen) {
@@ -117,7 +117,7 @@ const SideDrawer = ({ isOpen, onClose, activeRoute }) => {
                   activeRoute === item.name && posStyles.navigationTextActive
                 ]}
               >
-                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                {item.label || (item.name.charAt(0).toUpperCase() + item.name.slice(1))}
               </Text>
             </TouchableOpacity>
           ))}

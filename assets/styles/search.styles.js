@@ -1,5 +1,21 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { COLORS } from "../../constants/colors";
+
+// Helper function to create cross-platform shadow styles
+const createShadow = (color, offset, opacity, radius, elevation = 2) => {
+  if (Platform.OS === 'web') {
+    return {
+      boxShadow: `${offset.width}px ${offset.height}px ${radius}px rgba(${color === COLORS.shadow ? '0, 0, 0' : color}, ${opacity})`,
+    };
+  }
+  return {
+    shadowColor: color,
+    shadowOffset: offset,
+    shadowOpacity: opacity,
+    shadowRadius: radius,
+    elevation,
+  };
+};
 
 export const searchStyles = StyleSheet.create({
   container: {
@@ -19,14 +35,7 @@ export const searchStyles = StyleSheet.create({
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: COLORS.border,
-    shadowColor: COLORS.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    ...createShadow(COLORS.shadow, { width: 0, height: 2 }, 0.05, 4, 2),
   },
   searchIcon: {
     marginRight: 12,

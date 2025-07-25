@@ -21,7 +21,7 @@ const PosHomeScreen = () => {
       <SideDrawer 
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
-        activeRoute="sales"
+        activeRoute="index"
       />
       
       {/* Header */}

@@ -28,7 +28,7 @@ const CreateItemScreen = () => {
     { id: 'square', icon: 'square-outline' },
     { id: 'circle', icon: 'ellipse-outline' },
     { id: 'star', icon: 'star-outline' },
-    { id: 'hexagon', icon: 'hexagon-outline' },
+    { id: 'hexagon', icon: 'triangle-outline' }, // Changed to triangle as hexagon isn't available in Ionicons
   ];
   
   return (

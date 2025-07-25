@@ -19,6 +19,18 @@ const coffeeTheme = {
     card: "#FFFFFF",
     shadow: "#000000",
   };
+
+  const posTheme = {
+    primary: "#4CAF50",
+    primaryDark: "#388E3C",
+    background: "#212121",
+    backgroundLight: "#333333",
+    text: "#FFFFFF",
+    textSecondary: "#999999",
+    border: "#444444",
+    white: "#FFFFFF",
+    black: "#000000",
+  };
   
   const purpleTheme = {
     primary: "#6A1B9A",
@@ -95,7 +107,8 @@ const coffeeTheme = {
     mint: mintTheme,
     midnight: midnightTheme,
     roseGold: roseGoldTheme,
+    pos: posTheme,
   };
   
   // 👇 change this to switch theme
-  export const COLORS = THEMES.coffee;
+  export const COLORS = coffeeTheme;

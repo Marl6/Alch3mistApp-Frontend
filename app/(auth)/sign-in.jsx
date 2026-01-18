@@ -1,87 +1,110 @@
-import { TouchableOpacity, TextInput, Platform,  View, Text, Alert, KeyboardAvoidingView, ScrollView } from 'react-native'
-import {React, useState} from 'react'
-import { useSignIn } from "@clerk/clerk-expo"
-import { useRouter } from "expo-router"
-import { authStyles } from "../../assets/styles/auth.styles"
-import { COLORS } from '../../constants/colors'
-import { Ionicons } from "@expo/vector-icons"
-import { Image } from "expo-image"
+import { useSignIn } from "@clerk/clerk-expo";
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { authStyles } from "../../assets/styles/auth.styles";
+import ErrorNotification from "../../components/ErrorNotification";
+import { COLORS } from "../../constants/colors";
 
 const SignInScreen = () => {
   const router = useRouter();
 
-  const {signIn, setActive, isLoaded} = useSignIn();
+  const { signIn, setActive, isLoaded } = useSignIn();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const handleSignIn = async () => {
-    if (!email || !password){
-      Alert.alert("Error", "Please fill in all fields!")
-      return
+    if (!email || !password) {
+      setErrorMessage("Please fill in all fields!");
+      setShowError(true);
+      return;
     }
 
-    if(!isLoaded) return;
+    if (!isLoaded) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       const signInAttempt = await signIn.create({
-        identifier:email,
-        password
-      })
+        identifier: email,
+        password,
+      });
 
-      if(signInAttempt.status === "complete"){
-        await setActive({session:signInAttempt.createdSessionId})
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
       } else {
-        Alert.alert("Error", "Sign in failed. Please try again.")
+        setErrorMessage("Sign in failed. Please try again.");
+        setShowError(true);
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
-    } catch (err){
+    } catch (err) {
       // Improved error handling with more specific messages
       const errorMsg = err.errors?.[0]?.message || "";
       let displayMessage = "Sign in failed. Please try again.";
-      
+
       if (errorMsg.includes("email")) {
         displayMessage = "Invalid email address. Please check and try again.";
-      } else if (errorMsg.includes("password") || errorMsg.includes("credentials")) {
-        displayMessage = "Incorrect password. Please check your password and try again.";
+      } else if (
+        errorMsg.includes("password") ||
+        errorMsg.includes("credentials")
+      ) {
+        displayMessage =
+          "Incorrect password. Please check your password and try again.";
       } else if (errorMsg.includes("verification")) {
-        displayMessage = "Email not verified. Please verify your email before signing in.";
+        displayMessage =
+          "Email not verified. Please verify your email before signing in.";
       } else if (errorMsg.includes("rate limit")) {
         displayMessage = "Too many attempts. Please try again later.";
       } else if (errorMsg) {
         // Use the error message from Clerk if available
         displayMessage = errorMsg;
       }
-      
-      Alert.alert("Authentication Failed", displayMessage);
+
+      setErrorMessage(displayMessage);
+      setShowError(true);
       console.error(JSON.stringify(err, null, 2));
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <View style = {authStyles.container}>
+    <View style={authStyles.container}>
+      <ErrorNotification
+        message={errorMessage}
+        visible={showError}
+        onHide={() => setShowError(false)}
+      />
       <KeyboardAvoidingView
-      behavior= {Platform.OS === "ios" ? "padding" : "height"}
-      style = {authStyles.keyboardView}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 8}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={authStyles.keyboardView}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 8}
       >
         <ScrollView
-        contentContainerStyle={authStyles.scrollContent}
-        showsVerticalScrollIndicator={false}
+          contentContainerStyle={authStyles.scrollContent}
+          showsVerticalScrollIndicator={false}
         >
           <View style={authStyles.imageContainer}>
             <Image
               source={require("../../assets/logo/alchemistlogo.png")}
-              style= {authStyles.image}
-              contentFit = "contain"
-            >
-            </Image>
+              style={authStyles.image}
+              contentFit="contain"
+            ></Image>
           </View>
 
           <Text style={authStyles.title}>Welcome Back</Text>
@@ -124,25 +147,31 @@ const SignInScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-              style={[authStyles.authButton, loading && authStyles.buttonDisabled]}
-              onPress={handleSignIn}
-              disabled={loading}
-              activeOpacity={0.8}
-            >
-              <Text style={authStyles.buttonText}>{loading ? "Signing In..." : "Sign In"}</Text>
-            </TouchableOpacity>
+                style={[
+                  authStyles.authButton,
+                  loading && authStyles.buttonDisabled,
+                ]}
+                onPress={handleSignIn}
+                disabled={loading}
+                activeOpacity={0.8}
+              >
+                <Text style={authStyles.buttonText}>
+                  {loading ? "Signing In..." : "Sign In"}
+                </Text>
+              </TouchableOpacity>
 
-            {/* Sign Up Link */}
-            <TouchableOpacity
-              style={authStyles.linkContainer}
-              onPress={() => router.push("/(auth)/sign-up")}
-            >
-              <Text style={authStyles.linkText}>
-                Don&apos;t have an account? <Text style={authStyles.link}>Sign up</Text>
-              </Text>
-            </TouchableOpacity>
+              {/* Sign Up Link */}
+              <TouchableOpacity
+                style={authStyles.linkContainer}
+                onPress={() => router.push("/(auth)/sign-up")}
+              >
+                <Text style={authStyles.linkText}>
+                  Don&apos;t have an account?{" "}
+                  <Text style={authStyles.link}>Sign up</Text>
+                </Text>
+              </TouchableOpacity>
             </View>
-            </View>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

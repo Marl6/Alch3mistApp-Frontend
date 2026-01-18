@@ -1,20 +1,20 @@
+import { useSignUp } from "@clerk/clerk-expo";
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import {
-  View,
-  Text,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
+  View
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useSignUp } from "@clerk/clerk-expo";
-import { useState } from "react";
 import { authStyles } from "../../assets/styles/auth.styles";
-import { Image } from "expo-image";
+import ErrorNotification from "../../components/ErrorNotification";
 import { COLORS } from "../../constants/colors";
-import { Ionicons } from "@expo/vector-icons"
 import VerifyEmail from "./verify-email";
 
 const SignUpScreen = () => {
@@ -25,57 +25,73 @@ const SignUpScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const handleSignUp = async () => {
-    if (!email || !password) return Alert.alert("Error", "Please fill in the fields!");
-    if (password.length < 6) return Alert.alert("Error", "Password must be at least 6 characters");
+    if (!email || !password) {
+      setErrorMessage("Please fill in the fields!");
+      setShowError(true);
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters");
+      setShowError(true);
+      return;
+    }
 
-    if(!isLoaded) return;
+    if (!isLoaded) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      await signUp.create({emailAddress : email, password})
-    
-      await signUp.prepareEmailAddressVerification({strategy: "email_code"})
-      setPendingVerification(true)
+      await signUp.create({ emailAddress: email, password });
+
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      setPendingVerification(true);
     } catch (err) {
-        Alert.alert("Error", err.errors?.[0]?.message || "Failed to create account");
-        console.error(JSON.stringify(err, null, 2));
+      setErrorMessage(err.errors?.[0]?.message || "Failed to create account");
+      setShowError(true);
+      console.error(JSON.stringify(err, null, 2));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
-  if(pendingVerification) return <VerifyEmail email={email} onBack={() =>
-    setPendingVerification(false)}/>
-  
+  if (pendingVerification)
+    return (
+      <VerifyEmail email={email} onBack={() => setPendingVerification(false)} />
+    );
+
   return (
     <View style={authStyles.container}>
+      <ErrorNotification
+        message={errorMessage}
+        visible={showError}
+        onHide={() => setShowError(false)}
+      />
       <KeyboardAvoidingView
-      behavior= {Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 9}
-      style = {authStyles.keyboardView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 9}
+        style={authStyles.keyboardView}
       >
+        <ScrollView
+          contentContainerStyle={authStyles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={authStyles.imageContainer}>
+            <Image
+              source={require("../../assets/logo/alchemistlogo.png")}
+              style={authStyles.image}
+              contentFit="contain"
+            />
+          </View>
 
-      <ScrollView
-      contentContainerStyle={authStyles.scrollContent}
-      showsVerticalScrollIndicator={false}
-      >
+          <Text style={authStyles.title}>Create Account</Text>
 
-        <View style={authStyles.imageContainer}>
-          <Image 
-          source = {require("../../assets/logo/alchemistlogo.png")}
-          style ={authStyles.image}
-          contentFit="contain"
-          />
-        </View>
-
-        <Text style={authStyles.title}>Create Account</Text>
-
-        <View style={authStyles.formContainer}>
-          {/* Email Input */}
-          <View style={authStyles.inputContainer}>
+          <View style={authStyles.formContainer}>
+            {/* Email Input */}
+            <View style={authStyles.inputContainer}>
               <TextInput
                 style={authStyles.textInput}
                 placeholder="Enter email"
@@ -110,9 +126,12 @@ const SignUpScreen = () => {
               </TouchableOpacity>
             </View>
 
-             {/* Sign Up Button */}
-             <TouchableOpacity
-              style={[authStyles.authButton, loading && authStyles.buttonDisabled]}
+            {/* Sign Up Button */}
+            <TouchableOpacity
+              style={[
+                authStyles.authButton,
+                loading && authStyles.buttonDisabled,
+              ]}
               onPress={handleSignUp}
               disabled={loading}
               activeOpacity={0.8}
@@ -123,9 +142,13 @@ const SignUpScreen = () => {
             </TouchableOpacity>
 
             {/* Sign In Link */}
-            <TouchableOpacity style={authStyles.linkContainer} onPress={() => router.back()}>
+            <TouchableOpacity
+              style={authStyles.linkContainer}
+              onPress={() => router.back()}
+            >
               <Text style={authStyles.linkText}>
-                Already have an account? <Text style={authStyles.link}>Sign In</Text>
+                Already have an account?{" "}
+                <Text style={authStyles.link}>Sign In</Text>
               </Text>
             </TouchableOpacity>
           </View>

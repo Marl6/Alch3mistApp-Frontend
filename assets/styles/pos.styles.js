@@ -523,4 +523,379 @@ export const posStyles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10,
   },
+  
+  // List Item Styles
+  listItemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  listItemContent: {
+    flex: 1,
+  },
+  listItemTitle: {
+    color: COLORS.text,
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  listItemSubtitle: {
+    color: COLORS.textLight,
+    fontSize: 14,
+    marginTop: 2,
+  },
+  colorIndicator: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    marginRight: 12,
+  },
+  
+  // Modal Styles
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  modalContainer: {
+    backgroundColor: COLORS.card,
+    borderRadius: 8,
+    padding: 20,
+    width: '80%',
+    maxWidth: 400,
+  },
+  modalTitle: {
+    color: COLORS.text,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    color: COLORS.textLight,
+    fontSize: 14,
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  modalButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 4,
+    marginLeft: 10,
+  },
+  modalButtonPrimary: {
+    backgroundColor: COLORS.primary,
+  },
+  modalButtonSecondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  modalButtonTextPrimary: {
+    color: COLORS.white,
+    fontWeight: 'bold',
+  },
+  modalButtonTextSecondary: {
+    color: COLORS.text,
+  },
+  
+  // Toast/Notification Styles
+  toast: {
+    position: 'absolute',
+    bottom: 100,
+    left: 20,
+    right: 20,
+    backgroundColor: COLORS.text,
+    borderRadius: 4,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    zIndex: 1001,
+  },
+  toastSuccess: {
+    backgroundColor: '#388E3C',
+  },
+  toastError: {
+    backgroundColor: '#D32F2F',
+  },
+  toastText: {
+    color: COLORS.white,
+    fontSize: 14,
+    flex: 1,
+    marginLeft: 10,
+  },
+  
+  // Form validation
+  inputError: {
+    borderBottomColor: '#D32F2F',
+  },
+  errorText: {
+    color: '#D32F2F',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  
+  // Price display
+  priceText: {
+    color: COLORS.text,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  priceBadge: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  priceBadgeText: {
+    color: COLORS.white,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  
+  // Discount type badge
+  discountBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  discountBadgePercentage: {
+    backgroundColor: '#7B1FA2',
+  },
+  discountBadgeFixed: {
+    backgroundColor: '#1976D2',
+  },
+  discountBadgeText: {
+    color: COLORS.white,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  
+  // Empty State Icon Overlay (for modifiers screen)
+  emptyStateIcon: {
+    position: 'relative',
+    marginBottom: 20,
+  },
+  emptyStateOverlayIcon: {
+    position: 'absolute',
+    bottom: -5,
+    right: -5,
+  },
+  
+  // Option container (for modifiers)
+  optionContainer: {
+    backgroundColor: COLORS.card,
+    marginVertical: 10,
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: COLORS.border,
+  },
+  optionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+  },
+  optionNameInput: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+    color: COLORS.text,
+    fontSize: 16,
+    paddingVertical: 8,
+    marginHorizontal: 10,
+  },
+  addOptionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    marginHorizontal: 15,
+  },
+  addOptionText: {
+    color: COLORS.primary,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  
+  // Discount type selection
+  discountTypeContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  discountTypeButton: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  discountTypeSelected: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  discountTypeText: {
+    color: COLORS.text,
+    fontSize: 14,
+  },
+  discountTypeTextSelected: {
+    color: COLORS.white,
+    fontWeight: 'bold',
+  },
+  discountValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  discountValueInput: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+    color: COLORS.text,
+    fontSize: 16,
+    paddingVertical: 8,
+  },
+  applyToContainer: {
+    marginTop: 10,
+  },
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  radioButtonOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  radioButtonInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: COLORS.primary,
+  },
+  radioButtonText: {
+    color: COLORS.text,
+    fontSize: 16,
+  },
+  
+  // Swipe actions
+  swipeAction: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+  },
+  swipeActionDelete: {
+    backgroundColor: '#D32F2F',
+  },
+  swipeActionEdit: {
+    backgroundColor: '#1976D2',
+  },
+  swipeActionText: {
+    color: COLORS.white,
+    fontSize: 12,
+    marginTop: 4,
+  },
+  
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    width: '100%',
+    maxWidth: 400,
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.text,
+  },
+  modalBody: {
+    padding: 20,
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  modalFooter: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalButtonCancel: {
+    borderRightWidth: 1,
+    borderRightColor: COLORS.border,
+  },
+  modalButtonCancelText: {
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    fontWeight: '500',
+  },
+  modalButtonConfirm: {
+    backgroundColor: 'transparent',
+  },
+  modalButtonConfirmText: {
+    fontSize: 16,
+    color: '#D32F2F',
+    fontWeight: '600',
+  },
+  modalListItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  modalListItemText: {
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  categoryColorDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 10,
+  },
 });

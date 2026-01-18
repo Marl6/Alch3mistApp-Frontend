@@ -9,14 +9,22 @@ const TabsLayout = () => {
   if(!isSignedIn) return <Redirect href={"/(auth)/sign-in"}/>
     
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarStyle: {
+          transition: 'ease-in-out',
+        },
+      }}
+    >
       <Tabs.Screen 
         name="index"
         options={{
           title:"Recipes",
           tabBarIcon: ({color, size}) => (
             <Ionicons name="restaurant" size={size} color={color} />
-          )
+          ),
+          animation: 'fade',
+          animationDuration: 250,
         }}
       />
       <Tabs.Screen 
@@ -25,7 +33,9 @@ const TabsLayout = () => {
           title:"Search",
           tabBarIcon: ({color, size}) => (
             <Ionicons name="search" size={size} color={color} />
-          )
+          ),
+          animation: 'fade',
+          animationDuration: 250,
         }}
       />
       <Tabs.Screen 
@@ -34,7 +44,9 @@ const TabsLayout = () => {
           title:"Favorites",
           tabBarIcon: ({color, size}) => (
             <Ionicons name="heart" size={size} color={color} />
-          )
+          ),
+          animation: 'fade',
+          animationDuration: 250,
         }}
       />
     </Tabs>

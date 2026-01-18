@@ -10,8 +10,8 @@ export class PosCategoriesApiService extends BaseApiService {
   /**
    * Get all categories
    */
-  async getCategories({ active = true } = {}) {
-    return await this.get(API_ENDPOINTS.POS.CATEGORIES.BASE, { active });
+  async getCategories({ userId, active = true } = {}) {
+    return await this.get(API_ENDPOINTS.POS.CATEGORIES.BASE, { userId, active });
   }
 
   /**
@@ -27,7 +27,7 @@ export class PosCategoriesApiService extends BaseApiService {
    * Create a new category
    */
   async createCategory(categoryData) {
-    const requiredFields = ['name'];
+    const requiredFields = ['name', 'userId'];
     this.validateRequired(categoryData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.CATEGORIES.BASE, categoryData);

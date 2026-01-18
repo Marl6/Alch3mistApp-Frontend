@@ -12,13 +12,32 @@ const PosLayout = () => {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack 
+      screenOptions={{ 
+        headerShown: false,
+        animation: 'slide_from_right',
+        animationDuration: 300,
+        animationTypeForReplace: 'push',
+      }}
+    >
       <Stack.Screen name="index" />
       <Stack.Screen name="sales" />
       <Stack.Screen name="receipts" />
       <Stack.Screen name="shift" />
-      <Stack.Screen name="items/index" options={{ headerShown: false }} />
-      <Stack.Screen name="settings/index" options={{ headerShown: false }} />
+      <Stack.Screen 
+        name="items/index" 
+        options={{ 
+          headerShown: false,
+          animation: 'slide_from_bottom',
+        }} 
+      />
+      <Stack.Screen 
+        name="settings/index" 
+        options={{ 
+          headerShown: false,
+          animation: 'slide_from_bottom',
+        }} 
+      />
       <Stack.Screen name="backoffice" />
       <Stack.Screen name="apps" />
       <Stack.Screen name="support" />

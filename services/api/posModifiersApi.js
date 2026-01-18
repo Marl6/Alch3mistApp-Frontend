@@ -10,8 +10,8 @@ export class PosModifiersApiService extends BaseApiService {
   /**
    * Get all modifiers
    */
-  async getModifiers({ active = true, type = '' } = {}) {
-    const params = { active };
+  async getModifiers({ userId, active = true, type = '' } = {}) {
+    const params = { userId, active };
     if (type) params.type = type;
     
     return await this.get(API_ENDPOINTS.POS.MODIFIERS.BASE, params);
@@ -39,7 +39,7 @@ export class PosModifiersApiService extends BaseApiService {
    * Create a new modifier
    */
   async createModifier(modifierData) {
-    const requiredFields = ['name', 'type'];
+    const requiredFields = ['name', 'userId'];
     this.validateRequired(modifierData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.MODIFIERS.BASE, modifierData);

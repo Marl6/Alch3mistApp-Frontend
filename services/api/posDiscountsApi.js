@@ -10,8 +10,8 @@ export class PosDiscountsApiService extends BaseApiService {
   /**
    * Get all discounts
    */
-  async getDiscounts({ active = null, type = '' } = {}) {
-    const params = {};
+  async getDiscounts({ userId, active = null, type = '' } = {}) {
+    const params = { userId };
     if (active !== null) params.active = active;
     if (type) params.type = type;
     
@@ -21,8 +21,8 @@ export class PosDiscountsApiService extends BaseApiService {
   /**
    * Get active discounts only
    */
-  async getActiveDiscounts() {
-    return await this.get(API_ENDPOINTS.POS.DISCOUNTS.ACTIVE);
+  async getActiveDiscounts(userId) {
+    return await this.get(API_ENDPOINTS.POS.DISCOUNTS.ACTIVE, { userId });
   }
 
   /**
@@ -38,7 +38,7 @@ export class PosDiscountsApiService extends BaseApiService {
    * Create a new discount
    */
   async createDiscount(discountData) {
-    const requiredFields = ['name', 'type', 'value'];
+    const requiredFields = ['name', 'type', 'value', 'userId'];
     this.validateRequired(discountData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.DISCOUNTS.BASE, discountData);

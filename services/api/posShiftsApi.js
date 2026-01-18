@@ -11,16 +11,15 @@ export class PosShiftsApiService extends BaseApiService {
    * Get all shifts with filtering and pagination
    */
   async getShifts({ 
+    userId,
     page = 1, 
     limit = 50, 
-    userId = '', 
     status = '',
     startDate = '', 
     endDate = '' 
   } = {}) {
-    const params = { page, limit };
+    const params = { userId, page, limit };
     
-    if (userId) params.userId = userId;
     if (status) params.status = status;
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
@@ -31,15 +30,15 @@ export class PosShiftsApiService extends BaseApiService {
   /**
    * Get current active shift
    */
-  async getCurrentShift() {
-    return await this.get(API_ENDPOINTS.POS.SHIFTS.CURRENT);
+  async getCurrentShift({ userId }) {
+    return await this.get(API_ENDPOINTS.POS.SHIFTS.CURRENT, { userId });
   }
 
   /**
    * Start a new shift
    */
   async startShift(shiftData) {
-    const requiredFields = ['userId', 'startingCash'];
+    const requiredFields = ['userId', 'openedBy'];
     this.validateRequired(shiftData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.SHIFTS.START, shiftData);
@@ -49,7 +48,7 @@ export class PosShiftsApiService extends BaseApiService {
    * End current shift
    */
   async endShift(endData) {
-    const requiredFields = ['endingCash'];
+    const requiredFields = ['userId'];
     this.validateRequired(endData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.SHIFTS.END, endData);
@@ -121,8 +120,8 @@ export class PosShiftsApiService extends BaseApiService {
     this.validateRequired({ userId }, ['userId']);
     
     try {
-      const response = await this.get(`${API_ENDPOINTS.POS.SHIFTS.BASE}/check-active/${userId}`);
-      return response.success && response.data?.hasActiveShift;
+      const response = await this.getCurrentShift({ userId });
+      return response.success && response.data?.hasOpenShift;
     } catch (error) {
       console.error('Error checking active shift:', error);
       return false;
@@ -132,10 +131,11 @@ export class PosShiftsApiService extends BaseApiService {
   /**
    * Get today's shifts
    */
-  async getTodaysShifts() {
+  async getTodaysShifts(userId) {
     const today = new Date().toISOString().split('T')[0];
     
     return await this.getShifts({
+      userId,
       startDate: today,
       endDate: today,
     });
@@ -144,8 +144,8 @@ export class PosShiftsApiService extends BaseApiService {
   /**
    * Get active shifts (all users)
    */
-  async getActiveShifts() {
-    return await this.getShifts({ status: 'active' });
+  async getActiveShifts(userId) {
+    return await this.getShifts({ userId, status: 'open' });
   }
 
   /**

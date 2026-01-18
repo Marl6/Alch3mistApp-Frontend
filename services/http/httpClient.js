@@ -3,7 +3,7 @@
  * Centralized HTTP client with request/response interceptors
  */
 
-import { API_BASE_URL, DEFAULT_HEADERS, REQUEST_TIMEOUT } from './apiConfig.js';
+import { API_BASE_URL, DEFAULT_HEADERS, REQUEST_TIMEOUT } from '../config/apiConfig.js';
 
 class HttpClient {
   constructor() {

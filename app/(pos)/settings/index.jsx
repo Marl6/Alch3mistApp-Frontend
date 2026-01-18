@@ -80,23 +80,33 @@ const SettingsScreen = () => {
                 "Are you sure you want to sign out?",
                 [
                   { 
-                    text: "Cancel", 
-                    style: "cancel" 
+                    text: "No", 
+                    style: "cancel",
+                    onPress: () => {
+                      // User cancelled, do nothing
+                      console.log("Sign out cancelled");
+                    }
                   },
                   { 
-                    text: "Sign Out", 
+                    text: "Yes", 
                     style: "destructive",
                     onPress: async () => {
                       try {
+                        // Sign out from Clerk
                         await signOut();
-                        router.replace('/(auth)/sign-in');
+                        // Small delay to ensure session is cleared
+                        setTimeout(() => {
+                          // Navigate to sign-in page
+                          router.replace('/sign-in');
+                        }, 100);
                       } catch (error) {
                         Alert.alert("Error", "Failed to sign out. Please try again.");
                         console.error("Sign out error:", error);
                       }
                     }
                   }
-                ]
+                ],
+                { cancelable: false }
               );
             }}
           >

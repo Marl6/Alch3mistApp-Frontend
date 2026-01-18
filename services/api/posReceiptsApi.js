@@ -11,13 +11,14 @@ export class PosReceiptsApiService extends BaseApiService {
    * Get all receipts with filtering and pagination
    */
   async getReceipts({ 
+    userId,
     page = 1, 
     limit = 50, 
     startDate = '', 
     endDate = '',
     orderId = '' 
   } = {}) {
-    const params = { page, limit };
+    const params = { userId, page, limit };
     
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
@@ -47,10 +48,11 @@ export class PosReceiptsApiService extends BaseApiService {
   /**
    * Generate receipt for order
    */
-  async generateReceipt(orderId, receiptData = {}) {
-    this.validateRequired({ orderId }, ['orderId']);
+  async generateReceipt(userId, orderId, receiptData = {}) {
+    this.validateRequired({ userId, orderId }, ['userId', 'orderId']);
     
     return await this.post(API_ENDPOINTS.POS.RECEIPTS.BASE, {
+      userId,
       orderId,
       ...receiptData,
     });
@@ -105,8 +107,8 @@ export class PosReceiptsApiService extends BaseApiService {
   /**
    * Get receipt statistics
    */
-  async getReceiptStats({ startDate = '', endDate = '' } = {}) {
-    const params = {};
+  async getReceiptStats(userId, { startDate = '', endDate = '' } = {}) {
+    const params = { userId };
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
     
@@ -125,10 +127,11 @@ export class PosReceiptsApiService extends BaseApiService {
   /**
    * Get today's receipts
    */
-  async getTodaysReceipts() {
+  async getTodaysReceipts(userId) {
     const today = new Date().toISOString().split('T')[0];
     
     return await this.getReceipts({
+      userId,
       startDate: today,
       endDate: today,
     });
@@ -137,10 +140,10 @@ export class PosReceiptsApiService extends BaseApiService {
   /**
    * Search receipts
    */
-  async searchReceipts(query, { startDate = '', endDate = '' } = {}) {
-    this.validateRequired({ query }, ['query']);
+  async searchReceipts(userId, query, { startDate = '', endDate = '' } = {}) {
+    this.validateRequired({ userId, query }, ['userId', 'query']);
     
-    const params = { q: query };
+    const params = { userId, q: query };
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
     

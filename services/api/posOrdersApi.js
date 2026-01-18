@@ -11,19 +11,20 @@ export class PosOrdersApiService extends BaseApiService {
    * Get all orders with filtering and pagination
    */
   async getOrders({ 
+    userId,
     page = 1, 
     limit = 50, 
     status = '', 
     startDate = '', 
     endDate = '',
-    userId = '' 
+    shiftId = ''
   } = {}) {
-    const params = { page, limit };
+    const params = { userId, page, limit };
     
     if (status) params.status = status;
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
-    if (userId) params.userId = userId;
+    if (shiftId) params.shiftId = shiftId;
     
     return await this.get(API_ENDPOINTS.POS.ORDERS.BASE, params);
   }
@@ -41,7 +42,7 @@ export class PosOrdersApiService extends BaseApiService {
    * Create a new order
    */
   async createOrder(orderData) {
-    const requiredFields = ['items', 'total'];
+    const requiredFields = ['items', 'total', 'userId'];
     this.validateRequired(orderData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.ORDERS.CREATE, orderData);
@@ -140,10 +141,11 @@ export class PosOrdersApiService extends BaseApiService {
   /**
    * Get today's orders
    */
-  async getTodaysOrders({ status = '' } = {}) {
+  async getTodaysOrders(userId, { status = '' } = {}) {
     const today = new Date().toISOString().split('T')[0];
     
     return await this.getOrders({
+      userId,
       startDate: today,
       endDate: today,
       status,
@@ -153,15 +155,16 @@ export class PosOrdersApiService extends BaseApiService {
   /**
    * Get pending orders
    */
-  async getPendingOrders() {
-    return await this.getOrders({ status: 'pending' });
+  async getPendingOrders(userId) {
+    return await this.getOrders({ userId, status: 'pending' });
   }
 
   /**
    * Get completed orders
    */
-  async getCompletedOrders({ page = 1, limit = 50 } = {}) {
+  async getCompletedOrders(userId, { page = 1, limit = 50 } = {}) {
     return await this.getOrders({ 
+      userId,
       status: 'completed',
       page,
       limit 

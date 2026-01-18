@@ -10,8 +10,8 @@ export class PosItemsApiService extends BaseApiService {
   /**
    * Get all POS items with filtering and pagination
    */
-  async getItems({ page = 1, limit = 50, categoryId = '', search = '', active = true } = {}) {
-    const params = { page, limit, active };
+  async getItems({ userId, page = 1, limit = 50, categoryId = '', search = '', active = true } = {}) {
+    const params = { userId, page, limit, active };
     
     if (categoryId) params.categoryId = categoryId;
     if (search) params.search = search;
@@ -32,7 +32,7 @@ export class PosItemsApiService extends BaseApiService {
    * Create a new item
    */
   async createItem(itemData) {
-    const requiredFields = ['name', 'price', 'categoryId'];
+    const requiredFields = ['name', 'price', 'userId'];
     this.validateRequired(itemData, requiredFields);
     
     return await this.post(API_ENDPOINTS.POS.ITEMS.BASE, itemData);
@@ -59,10 +59,10 @@ export class PosItemsApiService extends BaseApiService {
   /**
    * Search items
    */
-  async searchItems(query, { categoryId = '', limit = 20 } = {}) {
-    this.validateRequired({ query }, ['query']);
+  async searchItems(query, { userId, categoryId = '', limit = 20 } = {}) {
+    this.validateRequired({ query, userId }, ['query', 'userId']);
     
-    const params = { q: query, limit };
+    const params = { q: query, userId, limit };
     if (categoryId) params.categoryId = categoryId;
     
     return await this.get(API_ENDPOINTS.POS.ITEMS.SEARCH, params);
@@ -71,10 +71,11 @@ export class PosItemsApiService extends BaseApiService {
   /**
    * Get items by category
    */
-  async getItemsByCategory(categoryId, { page = 1, limit = 50 } = {}) {
-    this.validateRequired({ categoryId }, ['categoryId']);
+  async getItemsByCategory(categoryId, { userId, page = 1, limit = 50 } = {}) {
+    this.validateRequired({ categoryId, userId }, ['categoryId', 'userId']);
     
     return await this.get(API_ENDPOINTS.POS.ITEMS.BY_CATEGORY(categoryId), {
+      userId,
       page,
       limit,
     });
@@ -101,8 +102,9 @@ export class PosItemsApiService extends BaseApiService {
   /**
    * Get low stock items
    */
-  async getLowStockItems(threshold = 10) {
+  async getLowStockItems(userId, threshold = 10) {
     return await this.get(API_ENDPOINTS.POS.ITEMS.BASE, {
+      userId,
       lowStock: true,
       threshold,
     });

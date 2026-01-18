@@ -15,7 +15,9 @@ import {
 import { authStyles } from "../../assets/styles/auth.styles";
 import ErrorNotification from "../../components/ErrorNotification";
 import { COLORS } from "../../constants/colors";
-import VerifyEmail from "./verify-email";
+
+// Dynamic import for VerifyEmail to avoid issues
+const VerifyEmail = require("./verify-email").default;
 
 const SignUpScreen = () => {
   const router = useRouter();
@@ -125,6 +127,9 @@ const SignUpScreen = () => {
                 />
               </TouchableOpacity>
             </View>
+
+            {/* CAPTCHA Container - Required for Clerk's bot protection */}
+            <View nativeID="clerk-captcha" style={{ marginVertical: 10 }} />
 
             {/* Sign Up Button */}
             <TouchableOpacity
